@@ -7,11 +7,19 @@
 <body>
     <h1>Upload Excel File</h1>
     <div>
-        <form action="" method="post" enctype="multipart/form-data">
-            Select Excel file to upload:
-            <input type="file" accept=".xls, .xlsx" name="fileToUpload" id="fileToUpload">
-            <input type="submit" value="Submit" name="submit">
-    </form>
+     {% block content %}
+        <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="myfile">
+            <button type="submit">Upload</button>
+        </form>
+
+        {% if uploaded_file_url %}
+            <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+        {% endif %}
+
+        <p><a href="{% url 'index' %}">Return to home</a></p>
+    {% endblock %}
     </div>
 </body>
 </html>
