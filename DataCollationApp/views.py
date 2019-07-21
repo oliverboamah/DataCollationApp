@@ -8,3 +8,7 @@ def index(request):
 
 def users(request):
     return render(request, 'users.html', {})
+
+
+def upload_file(request):
+    return render(request, 'upload_file.html', {})
