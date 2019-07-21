@@ -18,11 +18,11 @@ class Upload(models.Model):
 
 class User(models.Model):
     upload_id = models.IntegerField()
-    first_name = models.CharField(max_length=120)
-    last_name = models.CharField(max_length=120)
-    age = models.IntegerField()
-    gender = models.CharField(max_length=20)
-    address = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=120, null=True)
+    last_name = models.CharField(max_length=120, null=True)
+    age = models.IntegerField(null=True)
+    gender = models.CharField(max_length=20, null=True)
+    address = models.CharField(max_length=200, null=True)
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5} {6}".format(
