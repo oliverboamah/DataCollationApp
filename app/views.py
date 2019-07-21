@@ -36,8 +36,6 @@ def upload(request):
                                sheet['D' + str(i+2)].value, sheet['E' + str(i+2)].value
                                ])
 
-
-
         return render(request, 'upload_file.html', {
             'uploaded_file_url': multi_data
         })
