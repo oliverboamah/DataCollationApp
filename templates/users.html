@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
-    <h3>List of Users</h3>
-    <h4>Upload Title: {{ title }}</h4>
+    <div class="container">
+        <div class="card card-body bg-success" style="margin-top: 10px">
+            <div style="text-align: center">
+                   <h2 style="color: white">Data Collation App</h2>
+                    <h4 style="color: white">Title: {{ title }}</h4>
+                    <h4 style="color: white">Uploaded at: {{ created_at }}</h4>
+            </div>
+        </div>
     <div>
-        <table>
+        <br/><br/>
+        <h3>List of Personal Records</h3>
+        <table class="table table-striped table-bordered">
             <tr>
-                <th>ID</th>
+               <th>ID</th>
                 <th>FirstName</th>
                 <th>LastName</th>
                 <th>Age</th>
@@ -27,7 +36,9 @@
                 <td>{{ user.address }}</td>
             </tr>
             {% endfor %}
+
         </table>
+    </div>
     </div>
 </body>
 </html>

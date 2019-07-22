@@ -8,19 +8,16 @@ from . import models
 
 # loads homepage template
 def index(request):
-    return render(request, 'index.html', {'uploads': models.Upload.objects.all()})
+    return render(request, 'index.html', {'uploads': models.Upload.objects.all().order_by('-id')})
 
 
 # loads users template(individual entries)
 def users(request, upload_id):
     return render(request, 'users.html', {
         'title': models.Upload.objects.filter(id=upload_id)[0].title,
+        'created_at': models.Upload.objects.filter(id=upload_id)[0].created_at,
         'users': models.User.objects.filter(upload_id=upload_id)
     })
-
-
-def upload_file(request):
-    return render(request, 'upload_file.html', {})
 
 
 # saves excel file to storage
