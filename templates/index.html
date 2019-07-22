@@ -11,17 +11,19 @@
     <div>
         <table >
             <tr>
+                <th>ID</th>
                 <th>Title</th>
                 <th>Created at</th>
+                <th>Action</th>
             </tr>
-            <tr>
-                <td>Jill</td>
-                <td>Smith</td>
-            </tr>
-            <tr>
-                <td>Eve</td>
-                <td>Jackson</td>
-            </tr>
+                {% for upload in uploads %}
+                <tr>
+                    <td>{{ upload.id }}</td>
+                    <td>{{ upload.title }}</td>
+                    <td>{{ upload.created_at }}</td>
+                    <td><a href="{% url 'users' upload_id=upload.id %}"><button>View Entries</button></a></td>
+                </tr>
+                {% endfor %}
         </table>
     </div>
 </body>

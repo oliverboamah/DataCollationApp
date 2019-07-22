@@ -6,30 +6,27 @@
 </head>
 <body>
     <h3>List of Users</h3>
-    <h4>Upload Title</h4>
+    <h4>Upload Title: {{ title }}</h4>
     <div>
         <table>
             <tr>
+                <th>ID</th>
                 <th>FirstName</th>
                 <th>LastName</th>
                 <th>Age</th>
                 <th>Gender</th>
                 <th>Address</th>
             </tr>
+            {% for user in users %}
             <tr>
-                <td>Jill</td>
-                <td>Smith</td>
-                <td>22</td>
-                <td>Male</td>
-                <td>NewYork</td>
+                <td>{{ user.id }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.age }}</td>
+                <td>{{ user.gender }}</td>
+                <td>{{ user.address }}</td>
             </tr>
-            <tr>
-                <td>Tracy</td>
-                <td>Morgan</td>
-                <td>20</td>
-                <td>Female</td>
-                <td>California</td>
-            </tr>
+            {% endfor %}
         </table>
     </div>
 </body>

@@ -1,17 +1,21 @@
 from django.shortcuts import render
-from django.conf import settings
+from .tasks import upload_file_task
+from django.contrib import messages
+from django.shortcuts import redirect
 from django.core.files.storage import FileSystemStorage
-from openpyxl import load_workbook
 from . import models
 
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html', {})
+    return render(request, 'index.html', {'uploads': models.Upload.objects.all()})
 
 
-def users(request):
-    return render(request, 'users.html', {})
+def users(request, upload_id):
+    return render(request, 'users.html', {
+        'title': models.Upload.objects.filter(id=upload_id)[0].title,
+        'users': models.User.objects.filter(upload_id=upload_id)
+    })
 
 
 def upload_file(request):
@@ -19,48 +23,21 @@ def upload_file(request):
 
 
 def upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
+    try:
+        title = request.POST['title']
+        file = request.FILES['myfile']
 
-        # save uploaded excel file to storage
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
+        if request.method == 'POST' and file:
+            # save uploaded excel file to storage for processing
+            my_file = file
+            fs = FileSystemStorage()
+            file_name = fs.save(my_file.name, my_file)
 
-        # open uploaded excel file's first sheet
-        work_book = load_workbook('media/' + myfile.name)
-        sheet = work_book.get_sheet_by_name(work_book.sheetnames[0])
+            # use background celery task for processing
+            upload_file_task.delay(file_name, title)
+            messages.success(request, 'File Upload is in progress! Wait a moment and refresh this page.')
+            return redirect('index')
 
-        # retrieve values of cells into a 2D array
-        data = []
-
-        # number of rows of the excel sheet
-        num_rows = sheet.max_row
-
-        for i in range(num_rows-1):
-            data.append([sheet['A' + str(i + 2)].value, sheet['B' + str(i + 2)].value,
-                         sheet['C' + str(i + 2)].value,
-                         sheet['D' + str(i + 2)].value, sheet['E' + str(i + 2)].value
-                         ])
-
-        # save metadata about the upload/submission to database
-        upload_metadata = models.Upload(title='Title', document_url=filename)
-        upload_metadata.publish()
-
-        # save individual personal records to database
-        for i in range(len(data)):
-            individual_record = models.User(
-                upload_id=upload_metadata.id,
-                first_name=data[i][0],
-                last_name=data[i][1],
-                age=data[i][2],
-                gender=data[i][3],
-                address=data[i][4],
-            )
-
-            individual_record.publish()
-
-        return render(request, 'upload_file.html', {
-            'uploaded_file_url': upload_metadata.id
-        })
-    return render(request, 'upload_file.html')
+    except Exception as e:
+        messages.error(request, 'File Upload failed!')
+        return redirect('index')

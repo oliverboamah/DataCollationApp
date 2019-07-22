@@ -10,7 +10,8 @@
      {% block content %}
         <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="myfile">
+            <input type="text" name="title" placeholder="Enter Title" required><br/>
+            <input type="file" name="myfile" required>
             <button type="submit">Upload</button>
         </form>
 
