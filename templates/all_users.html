@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Records</title>
+    <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="card card-body bg-success" style="margin-top: 10px">
+            <div style="text-align: center">
+                   <h2 style="color: white">Data Collation App</h2>
+            </div>
+        </div>
+    <div>
+        <br/><br/>
+        <h3>List of All Records</h3>
+        <table class="table table-striped table-bordered">
+            <tr>
+               <th>ID</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Address</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.age }}</td>
+                <td>{{ user.gender }}</td>
+                <td>{{ user.address }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+    </div>
+</body>
+</html>

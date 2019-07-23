@@ -20,6 +20,13 @@ def users(request, upload_id):
     })
 
 
+# loads all users template(all entries)
+def all_users(request):
+    return render(request, 'all_users.html', {
+        'users': models.User.objects.all()
+    })
+
+
 # saves excel file to storage
 # starts a celery background delay task to process uploaded excel file
 def upload(request):

@@ -21,4 +21,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('users/<int:upload_id>', views.users, name='users'),
     path('upload/', views.upload, name='upload'),
+    path('all_users/', views.all_users, name='all_users'),
 ]
